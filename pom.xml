@@ -14,6 +14,11 @@
         <version>13</version>
     </parent>
 
+    <properties>
+        <scm.project.name>CamelIntegration</scm.project.name>
+    </properties>
+
+
     <dependencies>
         <dependency>
             <groupId>org.apache.camel</groupId>
