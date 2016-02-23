@@ -4,7 +4,7 @@
 
     <groupId>hzg.wpn.xenv.tango</groupId>
     <artifactId>camel-xenv</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
 
     <parent>
         <groupId>hzg.wpn.tango</groupId>
