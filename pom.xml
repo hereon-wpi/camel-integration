@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.tango</groupId>
             <artifactId>camel-tango</artifactId>
-            <version>0.2</version>
+            <version>0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>hzg.wpn</groupId>

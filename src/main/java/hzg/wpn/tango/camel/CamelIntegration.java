@@ -1,10 +1,10 @@
 package hzg.wpn.tango.camel;
 
+import hzg.wpn.tango.camel.bean.MappingBean;
 import hzg.wpn.xenv.ResourceManager;
 import org.apache.camel.CamelContext;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.model.RouteDefinition;
+import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.model.RoutesDefinition;
 import org.tango.DeviceState;
 import org.tango.server.ServerManager;
@@ -26,11 +26,19 @@ public class CamelIntegration {
     private CamelContext camelContext;
 
     @Init
+    @StateMachine(endState = DeviceState.ON)
     public void init() throws Exception {
-        camelContext = new DefaultCamelContext();
+
+        SimpleRegistry registry = new SimpleRegistry();
+        registry.put("mapping", new MappingBean());
+
+
+        camelContext = new DefaultCamelContext(registry);
 
         RoutesDefinition routeDefinition = camelContext.loadRoutesDefinition(
                 ResourceManager.loadResource("etc/CamelIntegration","routes.xml"));
+
+        //TODO set default error handler
 
         camelContext.addRouteDefinitions(routeDefinition.getRoutes());
     }

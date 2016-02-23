@@ -1,0 +1,5 @@
+test/test_server/0/double = /entry/double
+test/test_server/0/float  = /entry/float
+test/test_server/0/long   = /entry/long
+test/test_server/0/int    = /entry/int
+test/test_server/0/string = /entry/string
