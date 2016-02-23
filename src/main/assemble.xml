@@ -1,0 +1,12 @@
+<assembly schemaLocation="http://maven.apache.org/xsd/assembly-1.0.0.xsd">
+    <id>distr</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/lib/CamelIntegration</outputDirectory>
+            <fileMode>0777</fileMode>
+        </dependencySet>
+    </dependencySets>
+</assembly>
