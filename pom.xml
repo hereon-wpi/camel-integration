@@ -9,7 +9,7 @@
     <parent>
         <groupId>hzg.wpn.tango</groupId>
         <artifactId>server-parent</artifactId>
-        <version>13</version>
+        <version>14</version>
     </parent>
 
     <properties>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.tango</groupId>
             <artifactId>camel-tango</artifactId>
-            <version>0.4-SNAPSHOT</version>
+            <version>0.4</version>
         </dependency>
         <dependency>
             <groupId>hzg.wpn</groupId>
