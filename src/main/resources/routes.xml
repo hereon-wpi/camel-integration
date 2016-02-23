@@ -1,0 +1,7 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+    <!-- here we define the bar route -->
+    <route id="bar">
+        <from uri="tango:test/status_server/0?pipe=status_server_pipe"/>
+        <to uri="file:out"/>
+    </route>
+</routes>

@@ -1,0 +1,61 @@
+package hzg.wpn.tango.camel;
+
+import hzg.wpn.xenv.ResourceManager;
+import org.apache.camel.CamelContext;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.model.RouteDefinition;
+import org.apache.camel.model.RoutesDefinition;
+import org.tango.DeviceState;
+import org.tango.server.ServerManager;
+import org.tango.server.annotation.*;
+
+/**
+ * @author Igor Khokhriakov <igor.khokhriakov@hzg.de>
+ * @since 2/12/16
+ */
+@Device
+public class CamelIntegration {
+    @DeviceProperty(name = "TIK_TAK_SERVER")
+    private String tikTakUri;
+
+    public void setTikTakUri(String tikTakUri) {
+        this.tikTakUri = tikTakUri;
+    }
+
+    private CamelContext camelContext;
+
+    @Init
+    public void init() throws Exception {
+        camelContext = new DefaultCamelContext();
+
+        RoutesDefinition routeDefinition = camelContext.loadRoutesDefinition(
+                ResourceManager.loadResource("etc/CamelIntegration","routes.xml"));
+
+        camelContext.addRouteDefinitions(routeDefinition.getRoutes());
+    }
+
+    @Command
+    @StateMachine(endState = DeviceState.RUNNING)
+    public void start() throws Exception {
+        camelContext.start();
+    }
+
+    @Command
+    @StateMachine(endState = DeviceState.ON)
+    public void stop() throws Exception {
+        camelContext.stop();
+    }
+
+    @Delete
+    public void delete() throws Exception {
+        stop();
+    }
+
+    public static void main(String[] args) {
+        //TODO define in the Tango DB
+
+
+        ServerManager.getInstance().start(args, CamelIntegration.class);
+    }
+}
