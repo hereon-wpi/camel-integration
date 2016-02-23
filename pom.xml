@@ -18,6 +18,11 @@
         <scm.project.name>CamelIntegration</scm.project.name>
     </properties>
 
+    <scm>
+        <developerConnection>${scm.developerConnection}</developerConnection>
+        <tag>${project.version}</tag>
+    </scm>
+
 
     <dependencies>
         <dependency>
