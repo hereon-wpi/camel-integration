@@ -2,7 +2,12 @@
     <!-- here we define the bar route -->
     <route id="status_server_0">
         <from uri="tango:test/status_server/0?pipe=status_server_pipe&amp;poll=true"/>
-        <to uri="bean:mapping"/>
         <to uri="tango:development/dfs/0?pipe=pipe"/>
     </route>
+
+    <!-- PreExperimentDataCollector route id must contain predator keyword-->
+    <!--route id="predator_0">
+        <from uri="tango:development/predator/0?pipe=pipe&amp;once=true"/>
+        <to uri="tango:development/dfs/0?pipe=pipe"/>
+    </route-->
 </routes>

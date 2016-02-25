@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.tango</groupId>
             <artifactId>camel-tango</artifactId>
-            <version>0.4</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>hzg.wpn</groupId>
