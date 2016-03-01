@@ -1,10 +1,13 @@
 package hzg.wpn.tango.camel;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import hzg.wpn.xenv.ResourceManager;
 import org.apache.camel.CamelContext;
+import org.apache.camel.Route;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.model.RouteDefinition;
@@ -80,6 +83,18 @@ public class CamelIntegration {
             String predator = URISupport.createRemainingURI(uri, Collections.EMPTY_MAP).getSchemeSpecificPart();
             dynamicManager.addCommand(new ProxyCommand("load_data_set", predator + "/load_data_set"));
         }
+    }
+
+    @Attribute
+    public String[] getRouteDefinitions(){
+        return
+                camelContext.getRouteDefinitions().stream().map(RouteDefinition::getId).toArray(String[]::new);
+    }
+
+    @Attribute
+    public String[] getRoutes(){
+        return
+                camelContext.getRoutes().stream().map(Route::getId).toArray(String[]::new);
     }
 
     @AroundInvoke
