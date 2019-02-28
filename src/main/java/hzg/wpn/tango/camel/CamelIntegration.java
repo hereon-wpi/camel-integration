@@ -18,10 +18,12 @@ import org.slf4j.LoggerFactory;
 import org.tango.DeviceState;
 import org.tango.server.InvocationContext;
 import org.tango.server.ServerManager;
+import org.tango.server.ServerManagerUtils;
 import org.tango.server.annotation.*;
 import org.tango.server.dynamic.DynamicManager;
 import org.tango.server.dynamic.command.ProxyCommand;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
@@ -119,10 +121,8 @@ public class CamelIntegration {
         stop();
     }
 
-    public static void main(String[] args) {
-        //TODO define in the Tango DB
-
-
+    public static void main(String[] args) throws IOException {
         ServerManager.getInstance().start(args, CamelIntegration.class);
+        ServerManagerUtils.writePidFile(null);
     }
 }
