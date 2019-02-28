@@ -44,18 +44,27 @@
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <skipAssembly>false</skipAssembly>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>hzg.wpn.tango.camel.CamelIntegration</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>jar-distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <skipAssembly>false</skipAssembly>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>hzg.wpn.tango.camel.CamelIntegration</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
