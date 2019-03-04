@@ -17,6 +17,18 @@
         <tag>HEAD</tag>
     </scm>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>de.hzg.wpi.tango</groupId>
+                <artifactId>tango-server-bom</artifactId>
+                <version>12</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 
     <dependencies>
         <dependency>
@@ -25,10 +37,12 @@
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>de.hzg.wpi.tango</groupId>
-            <artifactId>tango-server-bom</artifactId>
-            <version>6</version>
-            <type>pom</type>
+            <groupId>hzg.wpn</groupId>
+            <artifactId>utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.tango-controls</groupId>
+            <artifactId>JTangoServer</artifactId>
         </dependency>
     </dependencies>
 

@@ -69,22 +69,6 @@ public class CamelIntegration {
 
         List<RouteDefinition> routes = routeDefinition.getRoutes();
         camelContext.addRouteDefinitions(routes);
-
-
-        final Optional<RouteDefinition> route = Iterables.tryFind(routes, new Predicate<RouteDefinition>() {
-            @Override
-            public boolean apply(RouteDefinition input) {
-                return input.getId().contains("predator");
-            }
-        });
-
-        if(route.isPresent()) {
-            log.debug("PreExperimentDataCollector route has been found. Initializing...");
-
-            URI uri = new URI(route.get().getInputs().get(0).getUri());
-            String predator = URISupport.createRemainingURI(uri, Collections.EMPTY_MAP).getSchemeSpecificPart();
-            dynamicManager.addCommand(new ProxyCommand("load_data_set", predator + "/load_data_set"));
-        }
     }
 
     @Attribute
