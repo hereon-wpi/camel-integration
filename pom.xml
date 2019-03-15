@@ -22,7 +22,7 @@
             <dependency>
                 <groupId>de.hzg.wpi.tango</groupId>
                 <artifactId>tango-server-bom</artifactId>
-                <version>12</version>
+                <version>13</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

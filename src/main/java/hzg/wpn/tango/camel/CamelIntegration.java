@@ -1,18 +1,14 @@
 package hzg.wpn.tango.camel;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import fr.esrf.Tango.DevFailed;
 import hzg.wpn.xenv.ResourceManager;
 import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
 import org.apache.camel.Route;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
-import org.apache.camel.util.URISupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tango.DeviceState;
@@ -21,11 +17,9 @@ import org.tango.server.ServerManager;
 import org.tango.server.ServerManagerUtils;
 import org.tango.server.annotation.*;
 import org.tango.server.dynamic.DynamicManager;
-import org.tango.server.dynamic.command.ProxyCommand;
+import org.tango.utils.DevFailedUtils;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,6 +35,10 @@ public class CamelIntegration {
 
     @DynamicManagement
     private DynamicManager dynamicManager;
+    @State
+    private volatile DeviceState state;
+    @Status
+    private volatile String status;
 
     public void setDynamicManager(DynamicManager dynamicManager) {
         this.dynamicManager = dynamicManager;
@@ -65,7 +63,13 @@ public class CamelIntegration {
         RoutesDefinition routeDefinition = camelContext.loadRoutesDefinition(
                 ResourceManager.loadResource("etc/CamelIntegration","routes.xml"));
 
-        //TODO set default error handler
+        routeDefinition.getRoutes().forEach(routeDefinition1 -> routeDefinition1.onException(DevFailed.class)
+                .process(exchange -> {
+                    DevFailed exception = (DevFailed) exchange.getProperty(Exchange.EXCEPTION_CAUGHT);
+                    setState(DeviceState.ALARM);
+                    setStatus(DevFailedUtils.toString(exception));
+                }));
+
 
         List<RouteDefinition> routes = routeDefinition.getRoutes();
         camelContext.addRouteDefinitions(routes);
@@ -108,5 +112,21 @@ public class CamelIntegration {
     public static void main(String[] args) throws IOException {
         ServerManager.getInstance().start(args, CamelIntegration.class);
         ServerManagerUtils.writePidFile(null);
+    }
+
+    public DeviceState getState() {
+        return state;
+    }
+
+    public void setState(DeviceState state) {
+        this.state = state;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
