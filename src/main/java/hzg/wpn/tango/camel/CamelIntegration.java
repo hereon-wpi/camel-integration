@@ -11,12 +11,12 @@ import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.tango.DeviceState;
-import org.tango.server.InvocationContext;
 import org.tango.server.ServerManager;
 import org.tango.server.ServerManagerUtils;
 import org.tango.server.annotation.*;
-import org.tango.server.dynamic.DynamicManager;
+import org.tango.server.device.DeviceManager;
 import org.tango.utils.DevFailedUtils;
 
 import java.io.IOException;
@@ -33,15 +33,15 @@ public class CamelIntegration {
     @DeviceProperty(name = "TIK_TAK_SERVER")
     private String tikTakUri;
 
-    @DynamicManagement
-    private DynamicManager dynamicManager;
+    @DeviceManagement
+    private DeviceManager deviceManager;
     @State
     private volatile DeviceState state;
     @Status
     private volatile String status;
 
-    public void setDynamicManager(DynamicManager dynamicManager) {
-        this.dynamicManager = dynamicManager;
+    public void setDeviceManager(DeviceManager deviceManager) {
+        this.deviceManager = deviceManager;
     }
 
     public void setTikTakUri(String tikTakUri) {
@@ -65,6 +65,7 @@ public class CamelIntegration {
 
         routeDefinition.getRoutes().forEach(routeDefinition1 -> routeDefinition1.onException(DevFailed.class)
                 .process(exchange -> {
+                    MDC.setContextMap(deviceManager.getDevice().getMdcContextMap());
                     DevFailed exception = (DevFailed) exchange.getProperty(Exchange.EXCEPTION_CAUGHT);
                     setState(DeviceState.ALARM);
                     setStatus(DevFailedUtils.toString(exception));
@@ -87,21 +88,18 @@ public class CamelIntegration {
                 camelContext.getRoutes().stream().map(Route::getId).toArray(String[]::new);
     }
 
-    @AroundInvoke
-    public void aroundInvoke(InvocationContext ctx){
-        System.out.println(ctx);
-    }
-
     @Command
     @StateMachine(endState = DeviceState.RUNNING)
     public void start() throws Exception {
         camelContext.start();
+        setStatus("STARTED");
     }
 
     @Command
     @StateMachine(endState = DeviceState.ON)
     public void stop() throws Exception {
         camelContext.stop();
+        setStatus("STOPPED");
     }
 
     @Delete
