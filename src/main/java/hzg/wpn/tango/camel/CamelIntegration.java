@@ -78,17 +78,29 @@ public class CamelIntegration {
     }
 
     @Command
-    @StateMachine(endState = DeviceState.RUNNING)
     public void start() throws Exception {
-        camelContext.start();
-        setStatus("STARTED");
+        try {
+            camelContext.start();
+            setState(DeviceState.RUNNING);
+            setStatus("STARTED");
+        } catch (Exception e) {
+            setState(DeviceState.FAULT);
+            setStatus(e.getMessage());
+            throw e;
+        }
     }
 
     @Command
-    @StateMachine(endState = DeviceState.ON)
     public void stop() throws Exception {
-        camelContext.stop();
-        setStatus("STOPPED");
+        try {
+            camelContext.stop();
+            setState(DeviceState.ON);
+            setStatus("STOPPED");
+        } catch (Exception e) {
+            setState(DeviceState.FAULT);
+            setStatus(e.getMessage());
+            throw e;
+        }
     }
 
     @Delete
