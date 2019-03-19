@@ -4,7 +4,7 @@
 
     <groupId>hzg.wpn.xenv</groupId>
     <artifactId>CamelIntegration</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.6</version>
 
     <properties>
         <bitbucket.repo.name>CamelIntegration</bitbucket.repo.name>
