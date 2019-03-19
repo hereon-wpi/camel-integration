@@ -9,8 +9,6 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.tango.DeviceState;
 import org.tango.server.ServerManager;
@@ -28,11 +26,6 @@ import java.util.List;
  */
 @Device
 public class CamelIntegration {
-    private final Logger log = LoggerFactory.getLogger(CamelIntegration.class);
-
-    @DeviceProperty(name = "TIK_TAK_SERVER")
-    private String tikTakUri;
-
     @DeviceManagement
     private DeviceManager deviceManager;
     @State
@@ -42,10 +35,6 @@ public class CamelIntegration {
 
     public void setDeviceManager(DeviceManager deviceManager) {
         this.deviceManager = deviceManager;
-    }
-
-    public void setTikTakUri(String tikTakUri) {
-        this.tikTakUri = tikTakUri;
     }
 
     private CamelContext camelContext;
