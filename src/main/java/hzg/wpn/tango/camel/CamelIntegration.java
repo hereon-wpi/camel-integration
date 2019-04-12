@@ -11,6 +11,7 @@ import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
 import org.slf4j.MDC;
 import org.tango.DeviceState;
+import org.tango.server.ChangeEventPusher;
 import org.tango.server.ServerManager;
 import org.tango.server.ServerManagerUtils;
 import org.tango.server.annotation.*;
@@ -28,9 +29,9 @@ import java.util.List;
 public class CamelIntegration {
     @DeviceManagement
     private DeviceManager deviceManager;
-    @State
+    @State(isPolled = true)
     private volatile DeviceState state;
-    @Status
+    @Status(isPolled = true)
     private volatile String status;
 
     public void setDeviceManager(DeviceManager deviceManager) {
@@ -107,6 +108,7 @@ public class CamelIntegration {
 
     public void setState(DeviceState state) {
         this.state = state;
+        new ChangeEventPusher<>("State", state, deviceManager).run();
     }
 
     public String getStatus() {
@@ -115,5 +117,6 @@ public class CamelIntegration {
 
     public void setStatus(String status) {
         this.status = status;
+        new ChangeEventPusher<>("Status", status, deviceManager).run();
     }
 }
