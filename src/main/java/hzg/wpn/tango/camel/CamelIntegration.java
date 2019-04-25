@@ -14,6 +14,7 @@ import org.tango.DeviceState;
 import org.tango.server.ChangeEventPusher;
 import org.tango.server.ServerManager;
 import org.tango.server.ServerManagerUtils;
+import org.tango.server.StateChangeEventPusher;
 import org.tango.server.annotation.*;
 import org.tango.server.device.DeviceManager;
 import org.tango.utils.DevFailedUtils;
@@ -108,7 +109,7 @@ public class CamelIntegration {
 
     public void setState(DeviceState state) {
         this.state = state;
-        new ChangeEventPusher<>("State", state, deviceManager).run();
+        new StateChangeEventPusher(state, deviceManager).run();
     }
 
     public String getStatus() {
